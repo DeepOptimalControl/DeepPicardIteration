@@ -1,0 +1,22 @@
+BASE: base_100d_T1.0_w0.0_0.yaml
+NAME: PINN_v=16_beta10.0_0
+
+METHOD:
+  cls: PINN
+  num_v_samples: 16
+
+TRAIN:
+  N_EPOCHS: 30000
+  LOSS:
+    beta: 10.0  # terminal weight
+
+PICARD:
+  N: 1
+
+DATA:
+  SAVE: false
+  SHUFFLE: false
+
+EVAL:
+  FREQ: 100
+  TEST_GRAD: true

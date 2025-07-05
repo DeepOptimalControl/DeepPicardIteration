@@ -1,0 +1,64 @@
+NAME: Nest_OU_NoEnT_10D_T1.0_w1.0_M4096_4096_hid128_epochs=16_alpha4.0
+EQUATION:
+  cls: OUProcessEquation
+  kwargs:
+    nx: 10
+    alpha: 1.0
+    T: 1.0
+    num_components: 5
+    mean_scale: 1.0
+    var_scale: 2.0
+    alpha_scale: 4.0
+
+METHOD:
+  cls: DeepNesting
+
+PICARD:
+  N: 80
+
+FORCE: true  # If folder exists, we overwrite it; This is useful in testing stage.
+DATA:
+  FLOAT: double
+  DATA_SIZE: 4096 # 256*512
+  NEW_SAMPLING: true
+  kwargs:
+    t_always_uniform: true
+    n_estimate_terminal: 4096
+    n_estimate_integral: 4096
+  N_WORKERS: 0
+  PREFETCH_FACTOR: None
+  MEMORY:
+    RESERVED: 1000.0  # Tune this one.
+    REDUCE_FACTOR: 1.0
+    REUSE: 2
+  PRELOAD: true
+TRAIN:
+  N_EPOCHS: 100000
+  BATCH_SIZE: 10
+  SUPERVISE_GRADIENT: true
+  LOSS:
+    beta: 0.0
+    SCALER:
+      cls: FixedLossScaler
+      kwargs:
+        fixed_weight: 1.0
+  OPTIMIZER:
+    kwargs:
+      lr: 0.001
+
+NETWORK:
+  cls: PicardSolution
+  NEURONS: [64, 64, 64, 64]
+  ACTIVATIONS: ["ELU", "ELU", "ELU", "ELU"]
+  BOUND: None
+  RELOAD: true
+  PISGRADNET: true
+
+EVAL:
+  L2_N_POINTS: 1000
+  FREQ: 100
+  TEST_GRAD: true
+
+LOGGING:
+  kwargs:
+    offline: true

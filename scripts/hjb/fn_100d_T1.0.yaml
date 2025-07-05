@@ -1,0 +1,22 @@
+BASE: base_100d_T1.0_w0.1_0.yaml
+NAME: FullyNonlinearSolver
+
+METHOD:
+  cls: FullyNonlinearSolver
+  dt: 0.02
+  num_sub_iter: 125
+
+TRAIN:
+  N_EPOCHS: 1
+  LOSS:
+    beta: 0.0  # no loss for terminal condition
+
+PICARD:
+  N: 1
+
+DATA:
+  SAVE: false
+  SHUFFLE: false
+
+EVAL:
+  FREQ: 1

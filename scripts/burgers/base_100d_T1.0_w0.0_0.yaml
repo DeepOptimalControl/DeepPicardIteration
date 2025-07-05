@@ -1,0 +1,57 @@
+NAME: Cha5.0_NoEnT_100D_T1.0_w0.0_DS4096_M4096_0_E16
+EQUATION:  # parameters for the PDE.
+  cls: Cha
+  kwargs:
+    nx: 100
+    alpha: 1.0
+    k: 5.0
+    T: 1.0
+
+METHOD:
+  cls: Picard
+
+PICARD:
+  N: 80  # Number of Picard iterations.
+
+FORCE: true  # If folder exists, we overwrite it.
+DATA:
+  FLOAT: double
+  DATA_SIZE: 4096 # Number of samples per iteration, $N$.
+  NEW_SAMPLING: true
+  kwargs:
+    t_always_uniform: true
+    n_estimate_terminal: 4096 # Number of samples for Monte Carlo, $M$.
+    n_estimate_integral: 4096
+  N_WORKERS: 0
+  PREFETCH_FACTOR: None
+  MEMORY:
+    RESERVED: 0.0  # If you have OOM, tune this one.
+    REDUCE_FACTOR: 1.0
+    REUSE: 2
+  PRELOAD: true
+TRAIN:
+  N_EPOCHS: 16  # Number of epochs.
+  BATCH_SIZE: 512  # Batch size.
+  SUPERVISE_GRADIENT: true
+  LOSS:
+    beta: 0.0
+    SCALER:
+      cls: FixedLossScaler
+      kwargs:
+        fixed_weight: 0.0 # NOTE that `fixed_weight * nx` equals to $\lambda$ in DPI. Since in the implementation, we use sum instead of mean.
+
+NETWORK:
+  cls: PicardSolution
+  NEURONS: [128, 128, 128, 128]
+  ACTIVATIONS: ["ELU", "ELU", "ELU", "ELU"]
+  BOUND: None
+  RELOAD: true
+
+EVAL:
+  L2_N_POINTS: 10000
+  FREQ: 8
+  TEST_GRAD: true
+
+LOGGING:
+  kwargs:
+    offline: true

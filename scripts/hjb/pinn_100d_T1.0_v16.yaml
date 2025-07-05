@@ -1,0 +1,22 @@
+BASE: base_100d_T1.0_w0.1_0.yaml
+NAME: PINN_v=16_PISGradNet
+
+METHOD:
+  cls: PINN
+  num_v_samples: 16
+
+TRAIN:
+  N_EPOCHS: 20000
+  LOSS:
+    beta: 0.0  # no loss for terminal condition, since we use PISGradNet
+
+PICARD:
+  N: 1
+
+DATA:
+  SAVE: false
+  SHUFFLE: false
+
+EVAL:
+  FREQ: 100
+  TEST_GRAD: true

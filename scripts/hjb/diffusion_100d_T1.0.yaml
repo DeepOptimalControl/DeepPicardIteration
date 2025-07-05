@@ -1,0 +1,15 @@
+BASE: base_100d_T1.0_w0.1_0.yaml
+NAME: Diffusion_PISGradNet
+
+METHOD:
+  cls: Diffusion
+  K: 50
+  dt: 0.005
+
+TRAIN:
+  N_EPOCHS: 15000
+  LOSS:
+    beta: 0.0  # no loss for terminal condition, since we use PISGradNet
+
+EVAL:
+  FREQ: 100
